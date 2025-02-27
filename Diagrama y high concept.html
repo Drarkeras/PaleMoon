@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pale Moon - Documentación de Desarrollo</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.2.3/mermaid.min.js"></script>
+  <style>
+    :root {
+      --primary-color: #2A2A2A;
+      --accent-color: #6C3483;
+      --light-bg: #F8F9FA;
+      --text-dark: #2C3E50;
+      --transition: all 0.3s ease;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      margin: 0;
+      line-height: 1.6;
+      color: var(--text-dark);
+      background: linear-gradient(45deg, #f3f4f6, #e5e7eb);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .high_concept {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
+    }
+
+    h1, h2 {
+      color: var(--accent-color);
+      margin-top: 0;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      text-align: center;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    h2 {
+      border-bottom: 3px solid var(--accent-color);
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+    }
+
+    ul {
+      padding-left: 1.2rem;
+    }
+
+    li {
+      margin-bottom: 0.8rem;
+      position: relative;
+    }
+
+    li::before {
+      content: "▹";
+      color: var(--accent-color);
+      position: absolute;
+      left: -1.2rem;
+    }
+
+    .mermaid-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      margin: 2rem 0;
+    }
+
+    .times {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .times-section {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      transition: var(--transition);
+    }
+
+    .times-section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .times-section strong {
+      color: var(--accent-color);
+      font-size: 1.2rem;
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    .activity {
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+
+    .time {
+      color: #666;
+      font-size: 0.9em;
+    }
+
+    footer {
+      background: var(--primary-color);
+      color: white;
+      text-align: center;
+      padding: 1.5rem;
+      margin-top: 4rem;
+      font-size: 0.9em;
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        padding: 2rem 1rem;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .high_concept {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="high_concept">
+      <h1><strong>High Concept: Pale Moon</strong></h1>
+
+    <h2><strong>Premisa</strong></h2>
+    <p>
+      Un grupo de aventureros llega a un poblado apartado y descubre que sus habitantes trabajan en la construcción de una edificación de origen incierto, bajo el control de una entidad desconocida. Sin tiempo para reaccionar, casi todos los aventureros son sometidos a un hechizo de control mental, dejando solo a la pícara del grupo con la libertad de actuar.
+    </p>
+    <p>
+      Ahora, deberá encontrar la manera de romper el control sobre sus compañeros, ya sea derrotándolos en combate o mediante sigilo e ingenio. Conforme los vaya rescatando, el grupo recuperará su fuerza para hacer frente al verdadero enemigo: un nigromante que ha esclavizado a los vivos y los muertos para construir un templo en honor a un antiguo dios de las tumbas.
+    </p>
+
+    <h2><strong>Mecánicas Principales</strong></h2>
+    <ul>
+      <li><strong>Combate por turnos con elementos tácticos</strong>: Los enfrentamientos se desarrollan en un tablero, donde los personajes pueden moverse y realizar acciones estratégicas.</li>
+      <li><strong>Sistema de cartas y dados</strong>: El uso de habilidades y objetos se gestiona mediante un mazo de cartas, mientras que las acciones, ataques y habilidades dependen de estadísticas y tiradas de dados de diferentes tipos (<em>d6, d20, d2, etc.</em>), influyendo en la probabilidad de éxito.</li>
+      <li><strong>Personajes con jugabilidad diferenciada</strong>: Cada personaje del grupo cuenta con estadísticas, habilidades y un sistema de control único, lo que permite distintos estilos de juego.</li>
+      <li><strong>Exploración y resolución de puzzles</strong>: Además de los combates, el juego incluye desafíos y acertijos en el mapa que desbloquean personajes, habilidades y objetos opcionales.</li>
+    </ul>
+
+    <h2><strong>Rescate y Recuperación del Grupo</strong></h2>
+    <ul>
+      <li><strong>Separación inicial</strong>: La pícara es la única libre al inicio y deberá reunir a los demás aventureros.</li>
+      <li>
+        <strong>Liberación de compañeros</strong>:
+        <ul>
+          <li>Algunos personajes deberán ser derrotados en combate para romper el control mental.</li>
+          <li>Otros podrán ser liberados mediante estrategias de sigilo o acertijos.</li>
+        </ul>
+      </li>
+      <li><strong>Progresión del grupo</strong>: Con cada compañero rescatado, el equipo recupera habilidades y estrategias clave para enfrentar amenazas mayores.</li>
+    </ul>
+
+    <h2><strong>Interacción con el Entorno</strong></h2>
+    <ul>
+      <li><strong>Mapa con estética de tablero de juego</strong>: El escenario tiene texturas pintadas y una estructura que simula un juego de mesa.</li>
+      <li><strong>Figuritas en movimiento</strong>: Los personajes tienen el aspecto de miniaturas que se desplazan por el mapa.</li>
+      <li><strong>Física de dados interactivos</strong>: Los dados se lanzan sobre el tablero, afectando físicamente a los personajes y elementos del entorno (por ejemplo, moviéndolos o derribándolos), aunque, una vez obtenidos los resultados de las tiradas, todo se recoloca automáticamente en su sitio.</li>
+    </ul>
+
+    <h2><strong>Progresión y Desbloqueo</strong></h2>
+    <ul>
+      <li><strong>Niveles estructurados en combates y desafíos</strong>: El juego se desarrolla en una serie de niveles donde los aventureros deben combatir, moverse estratégicamente y resolver desafíos.</li>
+      <li><strong>Jefes que expanden la experiencia</strong>: Cada jefe derrotado desbloquea nuevos personajes jugables, lo que permite ampliar la variedad de estrategias y mecánicas disponibles.</li>
+      <li><strong>Desafíos secundarios</strong>: Algunos puzzles y retos opcionales ofrecen recompensas en forma de habilidades, cartas o mejoras para los personajes.</li>
+    </ul>
+
+    <h2><strong>Ambientación</strong></h2>
+    <ul>
+      <li><strong>Fantasía oscura</strong>: El mundo del juego presenta un tono siniestro, con una historia de misterio y horror en la que los protagonistas se enfrentan a fuerzas que desafían la muerte.</li>
+      <li><strong>Grupo de aventureros variado</strong>: Los personajes son diversos tanto en personalidad como en especie, aportando riqueza al universo del juego y variedad en el gameplay.</li>
+    </ul>
+    </div>
+
+    <div class="mermaid-container">
+	<h2>Plan de Desarrollo de Pale Moon</h2>
+      <div class="mermaid">
+        gantt
+        dateFormat  YYYY-MM-DD
+        section Preprod
+        Guión Narrativo       : 2025-02-27, 5d
+        Influencias Estéticas : 2025-02-27, 5d
+        Guión Técnico         : 2025-03-01, 3d
+        Storyboard            : 2025-03-01, 3d
+
+        section Desarrollo
+        Modelado              : 2025-03-05, 35d
+        Desarrollo 2D         : 2025-03-10, 15d
+        Rigging               : 2025-04-14, 3d
+        Texturizado           : 2025-04-09, 5d
+        Animación             : 2025-04-16, 5d
+        Programación          : 2025-03-04, 55d
+
+        section Postprod
+        Fixing y Bugs         : 2025-04-20, 8d
+        Video de Jugabilidad  : 2025-04-27, 2d
+
+        section Resultados
+        Conclusiones          : 2025-04-28, 1d
+      </div>
+    </div>
+
+    <div class="times">
+      <div class="times-section">
+      <strong>Preproducción</strong>
+      <ul>
+        <li><span class="activity">Guión Narrativo</span><span class="time"> 27-02, 5 días</span></li>
+        <li><span class="activity">Influencias Estéticas</span><span class="time"> 27-02, 5 días</span></li>
+        <li><span class="activity">Guión Técnico</span><span class="time"> 01-03, 3 días</span></li>
+        <li><span class="activity">Storyboard</span><span class="time"> 01-03, 3 días</span></li>
+      </ul>
+    </div>
+    <div class="times-section">
+      <strong>Desarrollo</strong>
+      <ul>
+        <li><span class="activity">Modelado</span><span class="time"> 05-03, 35 días</span></li>
+        <li><span class="activity">Desarrollo 2D</span><span class="time"> 10-03, 15 días</span></li>
+        <li><span class="activity">Rigging</span><span class="time"> 14-04, 3 días</span></li>
+        <li><span class="activity">Texturizado</span><span class="time"> 09-04, 5 días</span></li>
+        <li><span class="activity">Animación</span><span class="time"> 16-04, 5 días</span></li>
+        <li><span class="activity">Programación</span><span class="time"> 04-03, 55 días</span></li>
+      </ul>
+    </div>
+    <div class="times-section">
+      <strong>Postproducción</strong>
+      <ul>
+        <li><span class="activity">Fixing y Bugs</span><span class="time"> 20-04, 8 días</span></li>
+        <li><span class="activity">Video de Jugabilidad</span><span class="time"> 27-04, 2 días</span></li>
+      </ul>
+    </div>
+    <div class="times-section">
+      <strong>Resultados</strong>
+      <ul>
+        <li><span class="activity">Conclusiones</span><span class="time"> 28-04, 1 días</span></li>
+      </ul>
+    </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      Proyecto desarrollado por Adrián Lorenzo Lasarte © 2025<br>
+      Todos los derechos reservados
+    </div>
+  </footer>
+
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#F8F9FA',
+        primaryTextColor: '#2C3E50',
+        primaryBorderColor: '#6C3483',
+        secondaryColor: '#E8DAEF',
+        tertiaryColor: '#D2B4DE'
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      clearTimeout(window.resizeTimeout);
+      window.resizeTimeout = setTimeout(() => {
+        location.reload();
+      }, 200);
+    });
+  </script>
+</body>
+</html>
